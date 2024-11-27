@@ -1,0 +1,4 @@
+repository "EZGames_RescueRush@huuminhgm@cloud"
+  path "/"
+    br "/main"
+    co "/main"
