@@ -29,6 +29,7 @@ public class Observer: MonoBehaviour
 
     public static void Notify( string name, params object[] data)
     {
+        Debug.Log("Notify " + name);
         if (!Listeners.ContainsKey(name))
         {
             return;

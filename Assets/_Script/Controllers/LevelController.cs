@@ -20,7 +20,7 @@ public class LevelController : MonoBehaviour
     [Header("Parent")]
     [SerializeField] Transform Parent;
 
-
+    public Level Level { get => level; set => level = value; }
 
     private void Start()
     {
@@ -42,7 +42,7 @@ public class LevelController : MonoBehaviour
     private void GenerateHero()
     {
         Hero = Instantiate(Hero, Parent);
-        Hero.transform.position = level.HeroSpawnPoint.SpawnCoordination;
+        Hero.transform.position = Level.HeroSpawnPoint.SpawnCoordination;
         //Hero.transform.parent = Parent;
         //Debug.Log(Hero.transform.parent + " | " + Parent);
         //Hero.transform.position = level.HeroSpawnPoint.SpawnCoordination;
@@ -51,7 +51,7 @@ public class LevelController : MonoBehaviour
     private void GenerateCat()
     {
         CatList.Clear();
-        List<Spawner> catSpawners = level.GetCatSpawnerList();
+        List<Spawner> catSpawners = Level.GetCatSpawnerList();
         foreach (Spawner catSpawner in catSpawners)
         {
             int randomX = (int)Random.Range(-catSpawner.SpawnCoordination.x, catSpawner.SpawnCoordination.x + 1);
@@ -59,11 +59,11 @@ public class LevelController : MonoBehaviour
             int randomZ = (int)Random.Range(-catSpawner.SpawnCoordination.z, catSpawner.SpawnCoordination.z + 1);
             int x = (int)(catSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
-            if (x > level.Width) { x = level.Width; }
+            if (x > Level.Width) { x = Level.Width; }
             int y = (int)catSpawner.SpawnCoordination.y + randomY;
             int z = (int)catSpawner.SpawnCoordination.z + randomZ;
             if (z < 0) { z = 0; }
-            if (z > level.GetLength()) { z = level.GetLength(); }
+            if (z > Level.GetLength()) { z = Level.GetLength(); }
             Vector3 spawnCoordination = new Vector3(x, y, z);
             GameObject catObject = Instantiate(Cat, spawnCoordination, Quaternion.identity);
             catObject.transform.parent = Parent;
@@ -74,7 +74,7 @@ public class LevelController : MonoBehaviour
     private void GenerateObstacle()
     {
         ObstacleList.Clear();
-        List<Spawner> obstacleSpawners = level.GetObstacleSpawnerList();
+        List<Spawner> obstacleSpawners = Level.GetObstacleSpawnerList();
         foreach (Spawner obstancleSpawner in obstacleSpawners)
         {
             int randomX = (int)Random.Range(-obstancleSpawner.SpawnCoordination.x, obstancleSpawner.SpawnCoordination.x + 1);
@@ -82,11 +82,11 @@ public class LevelController : MonoBehaviour
             int randomZ = (int)Random.Range(-obstancleSpawner.SpawnCoordination.z, obstancleSpawner.SpawnCoordination.z + 1);
             int x = (int)(obstancleSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
-            if (x > level.Width) { x = level.Width; }
+            if (x > Level.Width) { x = Level.Width; }
             int y = (int)obstancleSpawner.SpawnCoordination.y + randomY;
             int z = (int)obstancleSpawner.SpawnCoordination.z + randomZ;
             if (z < 0) { z = 0; }
-            if (z > level.GetLength()) { z = level.GetLength(); }
+            if (z > Level.GetLength()) { z = Level.GetLength(); }
             Vector3 spawnCoordination = new Vector3(x, y, z);
             GameObject catObject = Instantiate(Cat, spawnCoordination, Quaternion.identity);
             catObject.transform.parent = Parent;
@@ -98,8 +98,8 @@ public class LevelController : MonoBehaviour
     {
         GameObject ground = Instantiate(Ground);
         ground.transform.parent = Parent;
-        ground.transform.localScale = new Vector3(level.Width, 1, level.GetLength());
-        ground.transform.position = new Vector3(level.Width / 2, -1, level.GetLength() / 2);
+        ground.transform.localScale = new Vector3(Level.Width, 1, Level.GetLength());
+        ground.transform.position = new Vector3(Level.Width / 2, -1, Level.GetLength() / 2);
     }
 
     private void GenerateTsunami()
@@ -107,8 +107,7 @@ public class LevelController : MonoBehaviour
         GameObject tsunami = Instantiate(Tsunami);
         tsunami.transform.parent = Parent;
         tsunami.TryGetComponent(out TsunamiController tsunamiController);
-        Debug.Log(tsunamiController.gameObject.name);
         tsunami.transform.localScale = new Vector3(tsunamiController.Tsunami.Width, tsunamiController.Tsunami.Height, 10);
-        tsunami.transform.position = new Vector3(level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance);
+        tsunami.transform.position = new Vector3(Level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance);
     }
 }

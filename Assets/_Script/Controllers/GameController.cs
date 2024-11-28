@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -26,6 +28,8 @@ public class GameController : MonoBehaviour
     public LevelController LevelController { get; private set; }
     public TsunamiController TsunamiController { get; private set; }
     public List<CatController> CatControllers { get; private set; }
+
+    public UIDisplayController UIDisplayController { get; private set; }
 
 
     public void Reset()
@@ -62,8 +66,30 @@ public class GameController : MonoBehaviour
 
     public void StartLevel()
     {
-        HeroController.EnableControlHero();
-        TsunamiController.StartChasingHero();
+        StartCoroutine(StartLevelCoroutine());
+    }
+
+    public IEnumerator StartLevelCoroutine()
+    {
+        Observer.Notify(ObserverConstants.StartGame);
+        yield return new WaitForSeconds(LevelController.Level.PrepareTime);
+        HeroController.EnableControlHero(); //need to change to observer
+        //TsunamiController.StartChasingHero();
+        Observer.Notify(ObserverConstants.EnterPhase_1);
+    }
+
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneConstants.Level_1);
+        Observer.Notify(ObserverConstants.RestartGame);
+    }
+
+    public void UpgradeSpeed(int additionalSpeed)
+    {
+        if (HeroController != null)
+        {
+            HeroController.UpgradeSpeed(additionalSpeed);
+        }
     }
 
 }

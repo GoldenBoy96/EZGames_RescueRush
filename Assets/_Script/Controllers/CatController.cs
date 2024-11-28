@@ -7,6 +7,7 @@ public class CatController : MonoBehaviour
     [SerializeField] private Cat cat;
 
     [SerializeField] private GameObject heroObject;
+    [SerializeField] private HeroController heroController;
     [SerializeField] private bool isFollowHero = false;
     [SerializeField] private float speed = 0;
     [SerializeField] private float distance = 0;
@@ -20,22 +21,27 @@ public class CatController : MonoBehaviour
     private void Start()
     {
         GameController.Instance.RegisterController(this);
+        Observer.AddObserver(ObserverConstants.UpdateSpeed, new((x) => SyncSpeedWithHero()));
     }
     private void Update()
     {
         FollowHero();
     }
 
-    public void EnableFollowHero(GameObject heroObject)
+    public void EnableFollowHero(GameObject heroObject, HeroController heroController)
     {
-        Debug.Log(heroObject.name);
         this.heroObject = heroObject;
+        this.heroController = heroController;
         isFollowHero = true;
-        if(heroObject.TryGetComponent<HeroController>(out var controller))
-        {
-            speed = controller.PlayerSpeed;
-        }
+        SyncSpeedWithHero();
+    }
 
+    private void SyncSpeedWithHero()
+    {
+        if (heroController != null)
+        {
+            speed = heroController.HeroSpeed;
+        }
     }
 
     public void DisableFollowHero()

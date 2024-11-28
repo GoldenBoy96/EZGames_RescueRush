@@ -15,11 +15,11 @@ MonoBehaviour:
   levelIndex: 0
   width: 100
   seed: 
+  prepareTime: 5
   heroSpawnPoint:
     spawnCoordination: {x: 50, y: 0, z: 0}
     radius: {x: 5, y: 0, z: 5}
-  tsunamiStartDistance: 0
-  tsunamiSpeed_0: 0
+  tsunamiStartDistance: 50
   finishLineDistance_1: 400
   isRandomCatSpawn_1: 0
   catFixedSpawnPoint_1:
@@ -36,7 +36,13 @@ MonoBehaviour:
   - spawnCoordination: {x: 60, y: 0, z: 370}
     radius: {x: 20, y: 0, z: 20}
   numberCatRandomSpawn_1: 5
-  finishLineDistance_2: 0
+  isRandomObstacleSpawn_1: 0
+  obstacleFixedSpawnPoint_1: []
+  numberObstacleRandomSpawn_1: 5
+  finishLineDistance_2: 1000
   isRandomCatSpawn_2: 0
   catFixedSpawnPoint_2: []
   numberCatRandomSpawn_2: 5
+  isRandomObstacleSpawn_2: 0
+  obstacleFixedSpawnPoint_2: []
+  numberObstacleRandomSpawn_2: 5
