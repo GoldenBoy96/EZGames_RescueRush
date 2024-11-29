@@ -32,8 +32,15 @@ public class TsunamiController : MonoBehaviour
         {
             SwitchState(StateEnum.End);
             StopAllCoroutines();
+        }); 
+        Observer.AddObserver(ObserverConstants.WinGame, x =>
+        {
+            SwitchState(StateEnum.End);
+            StopAllCoroutines();
         });
         //StartChasingHero();
+
+        StartCoroutine(UpdateSlider());
     }
 
     public void Update()
@@ -92,11 +99,11 @@ public class TsunamiController : MonoBehaviour
             SwitchState(StateEnum.Phase_1);
         }
         if (transform.position.z >= GameController.Instance.LevelController.Level.FinishLineDistance_1
-            && transform.position.z < GameController.Instance.LevelController.Level.FinishLineDistance_2)
+            && transform.position.z < GameController.Instance.LevelController.GetFinishLineDistance())
         {
             SwitchState(StateEnum.Phase_2);
         }
-        if (transform.position.z >= GameController.Instance.LevelController.Level.FinishLineDistance_2)
+        if (transform.position.z >= GameController.Instance.LevelController.GetFinishLineDistance())
         {
             Debug.Log("End game due to out of finish line 2");
             SwitchState(StateEnum.End);
@@ -107,4 +114,10 @@ public class TsunamiController : MonoBehaviour
         state = stateEnum;
     }
 
+    private IEnumerator UpdateSlider()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Observer.Notify(ObserverConstants.WavePositionUpdate, GameController.Instance.LevelController.GetFinishLineDistance(), transform.position.z);
+        StartCoroutine(UpdateSlider());
+    }
 }

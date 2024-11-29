@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,13 +22,24 @@ public class GameController : MonoBehaviour
         }
     }
 
+    [SerializeField] private DynamicJoystick joystick;
+    [SerializeField] private bool isPlaying = false;
+
+    private void Start()
+    {
+        Observer.AddObserver(ObserverConstants.StartGame, x => isPlaying = true);
+        Observer.AddObserver(ObserverConstants.WinGame, x => isPlaying = false);
+        Observer.AddObserver(ObserverConstants.EndGame, x => isPlaying = false);
+    }
+
     public HeroController HeroController { get; private set; }
     public LevelController LevelController { get; private set; }
     public TsunamiController TsunamiController { get; private set; }
     public List<CatController> CatControllers { get; private set; }
 
     public UIDisplayLevel_1 UIDisplayController { get; private set; }
-
+    public DynamicJoystick Joystick { get => joystick; set => joystick = value; }
+    public bool IsPlaying { get => isPlaying; set => isPlaying = value; }
 
     public void Reset()
     {
@@ -77,6 +87,7 @@ public class GameController : MonoBehaviour
         HeroController.EnableControlHero(); //need to change to observer
         //TsunamiController.StartChasingHero();
         Observer.Notify(ObserverConstants.EnterPhase_1);
+        //AudioController.Instance.PlayMusic(AudioEnum.tsunami);
         ReduceSpeed();
     }
 
@@ -98,7 +109,7 @@ public class GameController : MonoBehaviour
 
     public void ReduceSpeed()
     {
-        StartCoroutine (ReduceSpeedCoroutine());
+        StartCoroutine(ReduceSpeedCoroutine());
     }
 
     private IEnumerator ReduceSpeedCoroutine()
@@ -111,4 +122,5 @@ public class GameController : MonoBehaviour
         StartCoroutine(ReduceSpeedCoroutine());
     }
 
+    
 }

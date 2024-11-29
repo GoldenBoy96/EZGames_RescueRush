@@ -17,6 +17,7 @@ public class Level : ScriptableObject
     [SerializeField] private float boostSpeedAmount = 1;
     [SerializeField] private float reduceSpeedAmount = 1;
     [SerializeField] private float reduceSpeedDeltaTime = 1;
+    [SerializeField] private float defaultRadius = 10;
 
     [Header("Phase prepare")]
     [SerializeField] private int prepareTime = 0;
@@ -43,6 +44,9 @@ public class Level : ScriptableObject
     [SerializeField] private int numberObstacleRandomSpawn_2 = 5;
     [SerializeField] private List<Spawner> obstacleFixedSpawnPoint_2;
 
+    private List<Spawner> tmpCatSpawner = new();
+    private List<Spawner> tmpObstacleSpawner = new();
+
     public int LevelIndex { get => levelIndex; set => levelIndex = value; }
     public int Width { get => width; set => width = value; }
     public string Seed { get => seed; set => seed = value; }
@@ -66,17 +70,19 @@ public class Level : ScriptableObject
     public bool IsRandomObstacleSpawn_2 { get => isRandomObstacleSpawn_2; set => isRandomObstacleSpawn_2 = value; }
     public List<Spawner> ObstacleFixedSpawnPoint_2 { get => obstacleFixedSpawnPoint_2; set => obstacleFixedSpawnPoint_2 = value; }
     public int NumberObstacleRandomSpawn_2 { get => numberObstacleRandomSpawn_2; set => numberObstacleRandomSpawn_2 = value; }
+    public float DefaultRadius { get => defaultRadius; set => defaultRadius = value; }
 
     public List<Spawner> GetCatSpawnerList()
     {
+        tmpCatSpawner.Clear();
         GenerateCatRandomSpawnPoint();
-        return CatFixedSpawnPoint_1.Concat(CatFixedSpawnPoint_2).ToList();
+        return tmpCatSpawner.ToList();
     }
     private void GenerateCatRandomSpawnPoint()
     {
-        if (IsRandomCatSpawn_1)
+        Debug.Log(isRandomCatSpawn_1 + " | " + isRandomCatSpawn_2);
+        if (isRandomCatSpawn_1)
         {
-            CatFixedSpawnPoint_1.Clear();
             if (NumberCatRandomSpawn_1 <= 0)
             {
                 NumberCatRandomSpawn_1 = 5;
@@ -89,16 +95,19 @@ public class Level : ScriptableObject
                 //Generate spawn point coordinate for phase 1
                 z += distance;
                 int randomX = Random.Range(0, width);
-                CatFixedSpawnPoint_1.Add(new(
+                tmpCatSpawner.Add(new(
                         new Vector3(randomX, 0, z),
-                        10
+                        defaultRadius
                     ));
             }
         }
-
-        if (IsRandomCatSpawn_2)
+        else
         {
-            CatFixedSpawnPoint_2.Clear();
+            tmpCatSpawner = tmpCatSpawner.Concat(catFixedSpawnPoint_1).ToList();
+        }
+
+        if (isRandomCatSpawn_2)
+        {
             if (NumberCatRandomSpawn_2 <= 0)
             {
                 NumberCatRandomSpawn_2 = 5;
@@ -108,18 +117,22 @@ public class Level : ScriptableObject
             float z = finishLineDistance_1;
             for (int i = 0; i < NumberCatRandomSpawn_2; i++)
             {
-                //Generate spawn point coordinate for phase 1
+                //Generate spawn point coordinate for phase 2
                 z += distance;
                 int randomX = Random.Range(0, width);
-                CatFixedSpawnPoint_2.Add(new(
+                tmpCatSpawner.Add(new(
                         new Vector3(randomX, 0, z),
-                        10
+                        defaultRadius
                     ));
             }
         }
+        else
+        {
+            tmpCatSpawner = tmpCatSpawner.Concat(catFixedSpawnPoint_2).ToList();
+        }
     }
 
-    
+
     public int GetLength()
     {
         return finishLineDistance_1 + finishLineDistance_2;
@@ -127,15 +140,15 @@ public class Level : ScriptableObject
 
     internal List<Spawner> GetObstacleSpawnerList()
     {
+        tmpObstacleSpawner.Clear();
         GenerateObstacleRandomSpawnPoint();
-        return obstacleFixedSpawnPoint_1.Concat(obstacleFixedSpawnPoint_2).ToList();
+        return tmpObstacleSpawner;
     }
 
     public void GenerateObstacleRandomSpawnPoint()
     {
         if (IsRandomObstacleSpawn_1)
         {
-            ObstacleFixedSpawnPoint_1.Clear();
             if (NumberObstacleRandomSpawn_1 <= 0)
             {
                 NumberObstacleRandomSpawn_1 = 5;
@@ -148,15 +161,18 @@ public class Level : ScriptableObject
                 //Generate spawn point coordinate for phase 1
                 z += distance;
                 int randomX = Random.Range(0, width);
-                ObstacleFixedSpawnPoint_1.Add(new(
+                tmpObstacleSpawner.Add(new(
                         new Vector3(randomX, 0, z),
-                        10
+                        defaultRadius
                     ));
             }
         }
+        else
+        {
+            tmpObstacleSpawner = tmpObstacleSpawner.Concat(obstacleFixedSpawnPoint_1).ToList();
+        }
         if (IsRandomObstacleSpawn_2)
         {
-            ObstacleFixedSpawnPoint_2.Clear();
             if (NumberObstacleRandomSpawn_2 <= 0)
             {
                 NumberObstacleRandomSpawn_2 = 5;
@@ -166,14 +182,18 @@ public class Level : ScriptableObject
             float z = finishLineDistance_1;
             for (int i = 0; i < NumberObstacleRandomSpawn_2; i++)
             {
-                //Generate spawn point coordinate for phase 1
+                //Generate spawn point coordinate for phase 2
                 z += distance;
                 int randomX = Random.Range(0, width);
-                ObstacleFixedSpawnPoint_1.Add(new(
+                tmpObstacleSpawner.Add(new(
                         new Vector3(randomX, 0, z),
-                        10
+                        defaultRadius
                     ));
             }
+        }
+        else
+        {
+            tmpObstacleSpawner = tmpObstacleSpawner.Concat(obstacleFixedSpawnPoint_2).ToList();
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class LobbyController : MonoBehaviour
 {
     [SerializeField] private float bonusSpeedLevel = 1;
-    [SerializeField] private Hero hero;
+    private Hero hero = null;
 
     private static readonly string speedString = "Speed: ";
 

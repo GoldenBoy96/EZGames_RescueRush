@@ -44,7 +44,7 @@ public class LevelController : MonoBehaviour
     {
         Hero = Instantiate(Hero, Parent);
         Hero.transform.position = Level.HeroSpawnPoint.SpawnCoordination;
-        Debug.Log("Hero Spawn Coordination: " + Level.HeroSpawnPoint.SpawnCoordination);
+        //Debug.Log("Hero Spawn Coordination: " + Level.HeroSpawnPoint.SpawnCoordination);
         //Hero.transform.parent = Parent;
         //Debug.Log(Hero.transform.parent + " | " + Parent);
         //Hero.transform.position = level.HeroSpawnPoint.SpawnCoordination;
@@ -79,9 +79,9 @@ public class LevelController : MonoBehaviour
         List<Spawner> obstacleSpawners = Level.GetObstacleSpawnerList();
         foreach (Spawner obstacleSpawner in obstacleSpawners)
         {
-            int randomX = (int)Random.Range(-obstacleSpawner.SpawnCoordination.x, obstacleSpawner.SpawnCoordination.x + 1);
-            int randomY = (int)Random.Range(-obstacleSpawner.SpawnCoordination.y, obstacleSpawner.SpawnCoordination.y + 1);
-            int randomZ = (int)Random.Range(-obstacleSpawner.SpawnCoordination.z, obstacleSpawner.SpawnCoordination.z + 1);
+            int randomX = (int)Random.Range(-obstacleSpawner.Radius, obstacleSpawner.Radius + 1);
+            int randomY = 0;
+            int randomZ = (int)Random.Range(-obstacleSpawner.Radius, obstacleSpawner.Radius + 1);
             int x = (int)(obstacleSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
             if (x > Level.Width) { x = Level.Width; }
@@ -108,8 +108,8 @@ public class LevelController : MonoBehaviour
         GameObject border_1 = Instantiate(Border);
         border_1.transform.parent = Parent;
         border_1.transform.localScale = new Vector3(1, 100, Level.GetLength());
-        border_1.transform.position = new Vector3(-1, 0, Level.GetLength() / 2); 
-        
+        border_1.transform.position = new Vector3(-1, 0, Level.GetLength() / 2);
+
         GameObject border_2 = Instantiate(Border);
         border_2.transform.parent = Parent;
         border_2.transform.localScale = new Vector3(1, 100, Level.GetLength());
@@ -118,12 +118,12 @@ public class LevelController : MonoBehaviour
         GameObject border_3 = Instantiate(Border);
         border_3.transform.parent = Parent;
         border_3.transform.localScale = new Vector3(Level.Width, 100, 1);
-        border_3.transform.position = new Vector3(Level.Width/2, 0, -1);
+        border_3.transform.position = new Vector3(Level.Width / 2, 0, -1);
 
         GameObject border_4 = Instantiate(Border);
         border_4.transform.parent = Parent;
         border_4.transform.localScale = new Vector3(Level.Width, 100, 1);
-        border_4.transform.position = new Vector3(Level.Width/2, 0, Level.GetLength()+1);
+        border_4.transform.position = new Vector3(Level.Width / 2, 0, Level.GetLength() + 1);
     }
 
 
@@ -133,6 +133,11 @@ public class LevelController : MonoBehaviour
         tsunami.transform.parent = Parent;
         tsunami.TryGetComponent(out TsunamiController tsunamiController);
         tsunami.transform.localScale = new Vector3(tsunamiController.Tsunami.Width, tsunamiController.Tsunami.Height, 500);
-        tsunami.transform.position = new Vector3(Level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance-500);
+        tsunami.transform.position = new Vector3(Level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance - 500);
+    }
+
+    public float GetFinishLineDistance()
+    {
+        return level.FinishLineDistance_1 + level.FinishLineDistance_2;
     }
 }

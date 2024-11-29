@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a6e5cd7cdb20147ad6762a8d61c9e1, type: 3}
   m_Name: Level_1
   m_EditorClassIdentifier: 
-  levelIndex: 0
+  levelIndex: 1
   width: 100
   seed: 
   boostSpeedAmount: 1
   reduceSpeedAmount: 1
   reduceSpeedDeltaTime: 0.2
+  defaultRadius: 10
   prepareTime: 5
   heroSpawnPoint:
     spawnCoordination: {x: 50, y: 0, z: 0}
@@ -25,115 +26,77 @@ MonoBehaviour:
   tsunamiStartDistance: 50
   finishLineDistance_1: 400
   isRandomCatSpawn_1: 0
-  numberCatRandomSpawn_1: 10
+  numberCatRandomSpawn_1: 50
   catFixedSpawnPoint_1:
-  - spawnCoordination: {x: 66, y: 0, z: 40}
+  - spawnCoordination: {x: 80, y: 0, z: 50}
     radius: 10
-  - spawnCoordination: {x: 15, y: 0, z: 80}
+  - spawnCoordination: {x: 20, y: 0, z: 90}
     radius: 10
-  - spawnCoordination: {x: 45, y: 0, z: 120}
+  - spawnCoordination: {x: 70, y: 0, z: 160}
     radius: 10
-  - spawnCoordination: {x: 47, y: 0, z: 160}
+  - spawnCoordination: {x: 30, y: 0, z: 240}
     radius: 10
-  - spawnCoordination: {x: 47, y: 0, z: 200}
+  - spawnCoordination: {x: 80, y: 0, z: 290}
     radius: 10
-  - spawnCoordination: {x: 89, y: 0, z: 240}
-    radius: 10
-  - spawnCoordination: {x: 83, y: 0, z: 280}
-    radius: 10
-  - spawnCoordination: {x: 39, y: 0, z: 320}
-    radius: 10
-  - spawnCoordination: {x: 11, y: 0, z: 360}
-    radius: 10
-  - spawnCoordination: {x: 87, y: 0, z: 400}
+  - spawnCoordination: {x: 60, y: 0, z: 370}
     radius: 10
   isRandomObstacleSpawn_1: 1
-  numberObstacleRandomSpawn_1: 5
+  numberObstacleRandomSpawn_1: 10
   obstacleFixedSpawnPoint_1:
-  - spawnCoordination: {x: 73, y: 0, z: 80}
+  - spawnCoordination: {x: 25, y: 0, z: 80}
     radius: 10
-  - spawnCoordination: {x: 60, y: 0, z: 160}
+  - spawnCoordination: {x: 32, y: 0, z: 160}
     radius: 10
-  - spawnCoordination: {x: 45, y: 0, z: 240}
+  - spawnCoordination: {x: 62, y: 0, z: 240}
     radius: 10
-  - spawnCoordination: {x: 34, y: 0, z: 320}
+  - spawnCoordination: {x: 84, y: 0, z: 320}
     radius: 10
-  - spawnCoordination: {x: 83, y: 0, z: 400}
+  - spawnCoordination: {x: 30, y: 0, z: 400}
     radius: 10
-  - spawnCoordination: {x: 32, y: 0, z: 200}
+  - spawnCoordination: {x: 20, y: 0, z: 450}
     radius: 10
-  - spawnCoordination: {x: 7, y: 0, z: 400}
+  - spawnCoordination: {x: 37, y: 0, z: 500}
     radius: 10
-  - spawnCoordination: {x: 20, y: 0, z: 600}
+  - spawnCoordination: {x: 79, y: 0, z: 550}
     radius: 10
-  - spawnCoordination: {x: 7, y: 0, z: 800}
+  - spawnCoordination: {x: 29, y: 0, z: 600}
     radius: 10
-  - spawnCoordination: {x: 34, y: 0, z: 1000}
+  - spawnCoordination: {x: 46, y: 0, z: 650}
+    radius: 10
+  - spawnCoordination: {x: 32, y: 0, z: 700}
+    radius: 10
+  - spawnCoordination: {x: 30, y: 0, z: 750}
+    radius: 10
+  - spawnCoordination: {x: 1, y: 0, z: 800}
+    radius: 10
+  - spawnCoordination: {x: 7, y: 0, z: 850}
+    radius: 10
+  - spawnCoordination: {x: 4, y: 0, z: 900}
+    radius: 10
+  - spawnCoordination: {x: 9, y: 0, z: 950}
+    radius: 10
+  - spawnCoordination: {x: 24, y: 0, z: 1000}
+    radius: 10
+  - spawnCoordination: {x: 95, y: 0, z: 1050}
+    radius: 10
+  - spawnCoordination: {x: 19, y: 0, z: 1100}
+    radius: 10
+  - spawnCoordination: {x: 46, y: 0, z: 1150}
+    radius: 10
+  - spawnCoordination: {x: 9, y: 0, z: 1200}
+    radius: 10
+  - spawnCoordination: {x: 1, y: 0, z: 1250}
+    radius: 10
+  - spawnCoordination: {x: 77, y: 0, z: 1300}
+    radius: 10
+  - spawnCoordination: {x: 22, y: 0, z: 1350}
+    radius: 10
+  - spawnCoordination: {x: 32, y: 0, z: 1400}
     radius: 10
   finishLineDistance_2: 1000
   isRandomCatSpawn_2: 1
-  numberCatRandomSpawn_2: 30
-  catFixedSpawnPoint_2:
-  - spawnCoordination: {x: 86, y: 0, z: 433}
-    radius: 10
-  - spawnCoordination: {x: 14, y: 0, z: 466}
-    radius: 10
-  - spawnCoordination: {x: 49, y: 0, z: 499}
-    radius: 10
-  - spawnCoordination: {x: 30, y: 0, z: 532}
-    radius: 10
-  - spawnCoordination: {x: 23, y: 0, z: 565}
-    radius: 10
-  - spawnCoordination: {x: 28, y: 0, z: 598}
-    radius: 10
-  - spawnCoordination: {x: 91, y: 0, z: 631}
-    radius: 10
-  - spawnCoordination: {x: 97, y: 0, z: 664}
-    radius: 10
-  - spawnCoordination: {x: 39, y: 0, z: 697}
-    radius: 10
-  - spawnCoordination: {x: 1, y: 0, z: 730}
-    radius: 10
-  - spawnCoordination: {x: 97, y: 0, z: 763}
-    radius: 10
-  - spawnCoordination: {x: 91, y: 0, z: 796}
-    radius: 10
-  - spawnCoordination: {x: 83, y: 0, z: 829}
-    radius: 10
-  - spawnCoordination: {x: 7, y: 0, z: 862}
-    radius: 10
-  - spawnCoordination: {x: 95, y: 0, z: 895}
-    radius: 10
-  - spawnCoordination: {x: 4, y: 0, z: 928}
-    radius: 10
-  - spawnCoordination: {x: 16, y: 0, z: 961}
-    radius: 10
-  - spawnCoordination: {x: 53, y: 0, z: 994}
-    radius: 10
-  - spawnCoordination: {x: 11, y: 0, z: 1027}
-    radius: 10
-  - spawnCoordination: {x: 63, y: 0, z: 1060}
-    radius: 10
-  - spawnCoordination: {x: 93, y: 0, z: 1093}
-    radius: 10
-  - spawnCoordination: {x: 2, y: 0, z: 1126}
-    radius: 10
-  - spawnCoordination: {x: 75, y: 0, z: 1159}
-    radius: 10
-  - spawnCoordination: {x: 78, y: 0, z: 1192}
-    radius: 10
-  - spawnCoordination: {x: 47, y: 0, z: 1225}
-    radius: 10
-  - spawnCoordination: {x: 40, y: 0, z: 1258}
-    radius: 10
-  - spawnCoordination: {x: 25, y: 0, z: 1291}
-    radius: 10
-  - spawnCoordination: {x: 97, y: 0, z: 1324}
-    radius: 10
-  - spawnCoordination: {x: 41, y: 0, z: 1357}
-    radius: 10
-  - spawnCoordination: {x: 33, y: 0, z: 1390}
-    radius: 10
+  numberCatRandomSpawn_2: 20
+  catFixedSpawnPoint_2: []
   isRandomObstacleSpawn_2: 1
-  numberObstacleRandomSpawn_2: 5
+  numberObstacleRandomSpawn_2: 20
   obstacleFixedSpawnPoint_2: []

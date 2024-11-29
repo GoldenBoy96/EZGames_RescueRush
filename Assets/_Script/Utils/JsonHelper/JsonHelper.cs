@@ -30,7 +30,7 @@ public class JsonHelper<T>
         {
             string loadData = File.ReadAllText(saverPath);
             data = JsonUtility.FromJson<T>(loadData);
-            Debug.Log("Load data complete!");
+            Debug.Log("Load data complete at: " + saverPath);
         }
         else
         {

@@ -20,7 +20,7 @@ public class CameraFollowHero : MonoBehaviour
         yield return new WaitUntil(() => GameController.Instance.HeroController != null);
 
         objToFollow = GameController.Instance.HeroController.gameObject.transform;
-        Debug.Log(objToFollow.name);
+        //Debug.Log(objToFollow.name);
         virtualCamera.Follow = objToFollow;
         virtualCamera.LookAt = objToFollow;
     }

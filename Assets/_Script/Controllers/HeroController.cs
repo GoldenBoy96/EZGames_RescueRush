@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HeroController : MonoBehaviour
 {
-    [SerializeField] Hero hero;
+    Hero hero;
     [SerializeField] private CharacterController controller;
     [SerializeField] private Vector3 playerVelocity;
     //[SerializeField] private bool groundedPlayer;
@@ -15,6 +15,7 @@ public class HeroController : MonoBehaviour
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private List<GameObject> followedCat = new();
     [SerializeField] private bool isControllable = false;
+    [SerializeField] private DynamicJoystick joystick;
 
     private static readonly string speedString = "Speed: ";
 
@@ -27,6 +28,7 @@ public class HeroController : MonoBehaviour
     public float GravityValue { get => gravityValue; set => gravityValue = value; }
     public List<GameObject> FollowedCat { get => followedCat; set => followedCat = value; }
     public bool IsControllable { get => isControllable; set => isControllable = value; }
+    public DynamicJoystick Joystick { get => joystick; set => joystick = value; }
 
     private void Start()
     {
@@ -37,14 +39,15 @@ public class HeroController : MonoBehaviour
         if (Controller == null) Controller = gameObject.AddComponent<CharacterController>();
         playerVelocity.y = 0f;
 
-        hero = SaveLoadHeroData.Load();
 
-        heroBaseSpeed = hero.Speed;
-        heroSpeed = hero.Speed;
 
         Observer.AddObserver(ObserverConstants.EndGame, x => isControllable = false);
+        Observer.AddObserver(ObserverConstants.WinGame, x => isControllable = false);
         Observer.Notify(ObserverConstants.UpdateSpeed, speedString + heroSpeed);
         Observer.Notify(ObserverConstants.UpdateCat);
+
+        StartCoroutine(CheckHeroWinGame());
+        StartCoroutine(UpdateSlider());
     }
 
     void Update()
@@ -63,8 +66,12 @@ public class HeroController : MonoBehaviour
             hero = new();
             SaveLoadHeroData.Save(hero);
         }
+
+        heroBaseSpeed = hero.Speed;
+        heroSpeed = hero.Speed;
         Observer.Notify(ObserverConstants.UpdateSpeed, hero.Speed);
 
+        joystick = GameController.Instance.Joystick;
     }
 
     public void EnableControlHero()
@@ -75,7 +82,8 @@ public class HeroController : MonoBehaviour
     {
         if (isControllable)
         {
-            Vector3 move = new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            //Vector3 move = new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+            Vector3 move = new(joystick.Horizontal, 0, joystick.Vertical);
             Controller.Move(HeroSpeed * Time.deltaTime * move);
 
             if (move != Vector3.zero)
@@ -97,6 +105,14 @@ public class HeroController : MonoBehaviour
             playerVelocity.y += GravityValue * Time.deltaTime;
             Controller.Move(PlayerVelocity * Time.deltaTime);
         }
+    }
+
+    public IEnumerator CheckHeroWinGame()
+    {
+        yield return new WaitUntil(
+                () => transform.position.z >= GameController.Instance.LevelController.GetFinishLineDistance() - 10
+            );
+        Observer.Notify(ObserverConstants.WinGame);
     }
     public Vector3 GetHeroPosition()
     {
@@ -125,6 +141,7 @@ public class HeroController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
+        if (!GameController.Instance.IsPlaying) return;
         //Debug.Log(collision.gameObject.tag + " | " + TagConstants.Cat);
         if (other.gameObject.CompareTag(TagConstants.Cat))
         {
@@ -164,6 +181,12 @@ public class HeroController : MonoBehaviour
         Debug.Log("Tsunami");
         Observer.Notify(ObserverConstants.EndGame);
         StopAllCoroutines();
+    }
+    private IEnumerator UpdateSlider()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Observer.Notify(ObserverConstants.HeroPositionUpdate, GameController.Instance.LevelController.GetFinishLineDistance(), transform.position.z);
+        StartCoroutine(UpdateSlider());
     }
 
 }

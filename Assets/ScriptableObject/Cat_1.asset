@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 50
   distance: 15
+  rotation: 0
+  isRandomRotate: 1

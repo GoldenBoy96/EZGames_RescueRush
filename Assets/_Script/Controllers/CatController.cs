@@ -18,14 +18,23 @@ public class CatController : MonoBehaviour
     {
         speed = cat.Speed;
         distance = cat.Distance;
-        //animator.Play(AnimConstants.Idle);
-        animator.SetInteger("Anim", 2);
+        animator.Play(AnimConstants.Idle);
     }
 
     private void Start()
     {
         GameController.Instance.RegisterController(this);
         Observer.AddObserver(ObserverConstants.UpdateSpeed, new((x) => SyncSpeedWithHero()));
+
+        if (cat.IsRandomRotate)
+        {
+            float randomEuler = Random.Range(0, 360);
+            transform.Rotate(new(0, randomEuler, 0));
+        }
+        else
+        {
+            transform.Rotate(new(0, cat.Rotation, 0));
+        }
     }
     private void Update()
     {
