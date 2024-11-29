@@ -44,21 +44,21 @@ public class LevelController : MonoBehaviour
     {
         Hero = Instantiate(Hero, Parent);
         Hero.transform.position = Level.HeroSpawnPoint.SpawnCoordination;
-        //Debug.Log("Hero Spawn Coordination: " + Level.HeroSpawnPoint.SpawnCoordination);
-        //Hero.transform.parent = Parent;
-        //Debug.Log(Hero.transform.parent + " | " + Parent);
-        //Hero.transform.position = level.HeroSpawnPoint.SpawnCoordination;
     }
 
     private void GenerateCat()
     {
         CatList.Clear();
-        List<Spawner> catSpawners = Level.GetCatSpawnerList();
+        List<Spawner> catSpawners = Level.GetCatSpawnerList(); //L?y to? ?? c?a nh?ng còn mèo c?n ???c t?o ra, có th? c? ??nh ho?c ng?u nhiên
+
         foreach (Spawner catSpawner in catSpawners)
         {
+            //Tính random ?o?n thêm b?t trong vòng tròn ???c phép t?o ra, giá tr? t? -radius ??n + radius
             int randomX = (int)Random.Range(-catSpawner.Radius, catSpawner.Radius + 1);
             int randomY = 0;
             int randomZ = (int)Random.Range(-catSpawner.Radius, catSpawner.Radius + 1);
+
+            //C?ng ?o?n random trên vào ?? tính ra to? ?? x y z cu?i cùng, ??ng th?i ch?n biên ?? không b? l?t ra kh?i b?n ??
             int x = (int)(catSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
             if (x > Level.Width) { x = Level.Width; }
@@ -66,6 +66,8 @@ public class LevelController : MonoBehaviour
             int z = (int)catSpawner.SpawnCoordination.z + randomZ;
             if (z < 0) { z = 0; }
             if (z > Level.GetLength()) { z = Level.GetLength(); }
+
+            //Ti?n hành Instantiate GameObject
             Vector3 spawnCoordination = new Vector3(x, y, z);
             GameObject catObject = Instantiate(Cat, spawnCoordination, Quaternion.identity);
             catObject.transform.parent = Parent;
@@ -92,8 +94,6 @@ public class LevelController : MonoBehaviour
             Vector3 spawnCoordination = new Vector3(x, y, z);
             GameObject obstacleObject = Instantiate(Obstacle, spawnCoordination, Quaternion.identity);
             obstacleObject.transform.parent = Parent;
-            //obstacleObject.TryGetComponent(out ObstacleController obstacleController);
-            //Debug.Log(obstacleController.ToString());
             ObstacleList.Add(obstacleObject);
         }
     }
