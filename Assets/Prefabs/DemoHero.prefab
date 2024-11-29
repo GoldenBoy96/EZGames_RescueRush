@@ -123,11 +123,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f90740656e3c64aa7c3c167fe4b757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hero:
+    speed: 20
+    heroDefaultSpeed: 20
   controller: {fileID: 5406664815933257116}
   playerVelocity: {x: 0, y: 0, z: 0}
-  playerSpeed: 50
+  heroBaseSpeed: 20
+  heroSpeed: 20
   jumpHeight: 1
   gravityValue: 0
+  followedCat: []
+  isControllable: 0
 --- !u!143 &5406664815933257116
 CharacterController:
   m_ObjectHideFlags: 0

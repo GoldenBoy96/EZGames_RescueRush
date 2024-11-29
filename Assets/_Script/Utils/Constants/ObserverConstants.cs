@@ -1,6 +1,7 @@
 public static class ObserverConstants
 {
     public static readonly string UpdateSpeed = "UpdateSpeed";
+    public static readonly string UpdateCat = "UpdateCat";
     public static readonly string StartGame = "StartGame";
     public static readonly string EnterPhase_Prepare = "EnterPhase_Prepare";
     public static readonly string EnterPhase_1 = "EnterPhase_1";

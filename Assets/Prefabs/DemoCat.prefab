@@ -885,8 +885,8 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 1
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 4
@@ -905,8 +905,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cat: {fileID: 11400000, guid: 08a4a00efb5821246930aaac7d99f1c9, type: 2}
   heroObject: {fileID: 0}
+  heroController: {fileID: 0}
   isFollowHero: 0
+  speed: 0
   distance: 0
+  animator: {fileID: 2617242123571900290}
 --- !u!1 &2669062998699926994
 GameObject:
   m_ObjectHideFlags: 0

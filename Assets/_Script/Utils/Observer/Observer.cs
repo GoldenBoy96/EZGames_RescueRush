@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Observer: MonoBehaviour
@@ -29,21 +30,23 @@ public class Observer: MonoBehaviour
 
     public static void Notify( string name, params object[] data)
     {
-        Debug.Log("Notify " + name);
         if (!Listeners.ContainsKey(name))
         {
             return;
         }
 
-        foreach (var listener in Listeners[name])
+        foreach (var listener in Listeners[name].ToList())
         {
             try
             {
                 listener.Invoke(data);
+                //Debug.Log("Notify " + name);
             }
             catch (Exception ex)
             {
-                Debug.LogError("Error on invoke listener: " + ex);
+                RemoveObserver(name, listener);
+                Notify(name, data);
+                //Debug.LogError("Error on invoke listener: " + ex);
             }
         }
     }

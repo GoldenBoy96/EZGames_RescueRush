@@ -12,6 +12,7 @@ public class LevelController : MonoBehaviour
     [SerializeField] GameObject Obstacle;
     [SerializeField] GameObject Ground;
     [SerializeField] GameObject Tsunami;
+    [SerializeField] GameObject Border;
 
     [Header("Game Data")]
     [SerializeField] List<GameObject> CatList;
@@ -25,24 +26,25 @@ public class LevelController : MonoBehaviour
     private void Start()
     {
         GameController.Instance.RegisterController(this);
-
-        GenerateLevel();
+        StartCoroutine(GenerateLevel());
         //if (Parent == null) Parent = transform.root;
     }
 
-    public void GenerateLevel()
+    public IEnumerator GenerateLevel()
     {
+        yield return new WaitUntil(() => Hero != null);
         GenerateGround();
-        GenerateHero();
         GenerateCat();
         GenerateObstacle();
         GenerateTsunami();
+        GenerateHero();
     }
 
     private void GenerateHero()
     {
         Hero = Instantiate(Hero, Parent);
         Hero.transform.position = Level.HeroSpawnPoint.SpawnCoordination;
+        Debug.Log("Hero Spawn Coordination: " + Level.HeroSpawnPoint.SpawnCoordination);
         //Hero.transform.parent = Parent;
         //Debug.Log(Hero.transform.parent + " | " + Parent);
         //Hero.transform.position = level.HeroSpawnPoint.SpawnCoordination;
@@ -54,9 +56,9 @@ public class LevelController : MonoBehaviour
         List<Spawner> catSpawners = Level.GetCatSpawnerList();
         foreach (Spawner catSpawner in catSpawners)
         {
-            int randomX = (int)Random.Range(-catSpawner.SpawnCoordination.x, catSpawner.SpawnCoordination.x + 1);
-            int randomY = (int)Random.Range(-catSpawner.SpawnCoordination.y, catSpawner.SpawnCoordination.y + 1);
-            int randomZ = (int)Random.Range(-catSpawner.SpawnCoordination.z, catSpawner.SpawnCoordination.z + 1);
+            int randomX = (int)Random.Range(-catSpawner.Radius, catSpawner.Radius + 1);
+            int randomY = 0;
+            int randomZ = (int)Random.Range(-catSpawner.Radius, catSpawner.Radius + 1);
             int x = (int)(catSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
             if (x > Level.Width) { x = Level.Width; }
@@ -75,22 +77,24 @@ public class LevelController : MonoBehaviour
     {
         ObstacleList.Clear();
         List<Spawner> obstacleSpawners = Level.GetObstacleSpawnerList();
-        foreach (Spawner obstancleSpawner in obstacleSpawners)
+        foreach (Spawner obstacleSpawner in obstacleSpawners)
         {
-            int randomX = (int)Random.Range(-obstancleSpawner.SpawnCoordination.x, obstancleSpawner.SpawnCoordination.x + 1);
-            int randomY = (int)Random.Range(-obstancleSpawner.SpawnCoordination.y, obstancleSpawner.SpawnCoordination.y + 1);
-            int randomZ = (int)Random.Range(-obstancleSpawner.SpawnCoordination.z, obstancleSpawner.SpawnCoordination.z + 1);
-            int x = (int)(obstancleSpawner.SpawnCoordination.x + randomX);
+            int randomX = (int)Random.Range(-obstacleSpawner.SpawnCoordination.x, obstacleSpawner.SpawnCoordination.x + 1);
+            int randomY = (int)Random.Range(-obstacleSpawner.SpawnCoordination.y, obstacleSpawner.SpawnCoordination.y + 1);
+            int randomZ = (int)Random.Range(-obstacleSpawner.SpawnCoordination.z, obstacleSpawner.SpawnCoordination.z + 1);
+            int x = (int)(obstacleSpawner.SpawnCoordination.x + randomX);
             if (x < 0) { x = 0; }
             if (x > Level.Width) { x = Level.Width; }
-            int y = (int)obstancleSpawner.SpawnCoordination.y + randomY;
-            int z = (int)obstancleSpawner.SpawnCoordination.z + randomZ;
+            int y = (int)obstacleSpawner.SpawnCoordination.y + randomY;
+            int z = (int)obstacleSpawner.SpawnCoordination.z + randomZ;
             if (z < 0) { z = 0; }
             if (z > Level.GetLength()) { z = Level.GetLength(); }
             Vector3 spawnCoordination = new Vector3(x, y, z);
-            GameObject catObject = Instantiate(Cat, spawnCoordination, Quaternion.identity);
-            catObject.transform.parent = Parent;
-            ObstacleList.Add(catObject);
+            GameObject obstacleObject = Instantiate(Obstacle, spawnCoordination, Quaternion.identity);
+            obstacleObject.transform.parent = Parent;
+            //obstacleObject.TryGetComponent(out ObstacleController obstacleController);
+            //Debug.Log(obstacleController.ToString());
+            ObstacleList.Add(obstacleObject);
         }
     }
 
@@ -100,14 +104,35 @@ public class LevelController : MonoBehaviour
         ground.transform.parent = Parent;
         ground.transform.localScale = new Vector3(Level.Width, 1, Level.GetLength());
         ground.transform.position = new Vector3(Level.Width / 2, -1, Level.GetLength() / 2);
+
+        GameObject border_1 = Instantiate(Border);
+        border_1.transform.parent = Parent;
+        border_1.transform.localScale = new Vector3(1, 100, Level.GetLength());
+        border_1.transform.position = new Vector3(-1, 0, Level.GetLength() / 2); 
+        
+        GameObject border_2 = Instantiate(Border);
+        border_2.transform.parent = Parent;
+        border_2.transform.localScale = new Vector3(1, 100, Level.GetLength());
+        border_2.transform.position = new Vector3(Level.Width + 1, 0, Level.GetLength() / 2);
+
+        GameObject border_3 = Instantiate(Border);
+        border_3.transform.parent = Parent;
+        border_3.transform.localScale = new Vector3(Level.Width, 100, 1);
+        border_3.transform.position = new Vector3(Level.Width/2, 0, -1);
+
+        GameObject border_4 = Instantiate(Border);
+        border_4.transform.parent = Parent;
+        border_4.transform.localScale = new Vector3(Level.Width, 100, 1);
+        border_4.transform.position = new Vector3(Level.Width/2, 0, Level.GetLength()+1);
     }
+
 
     private void GenerateTsunami()
     {
         GameObject tsunami = Instantiate(Tsunami);
         tsunami.transform.parent = Parent;
         tsunami.TryGetComponent(out TsunamiController tsunamiController);
-        tsunami.transform.localScale = new Vector3(tsunamiController.Tsunami.Width, tsunamiController.Tsunami.Height, 10);
-        tsunami.transform.position = new Vector3(Level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance);
+        tsunami.transform.localScale = new Vector3(tsunamiController.Tsunami.Width, tsunamiController.Tsunami.Height, 500);
+        tsunami.transform.position = new Vector3(Level.Width / 2, 0, -tsunamiController.Tsunami.StartDistance-500);
     }
 }

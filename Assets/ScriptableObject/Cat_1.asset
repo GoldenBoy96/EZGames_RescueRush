@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Cat_1
   m_EditorClassIdentifier: 
   speed: 50
-  distance: 10
+  distance: 15

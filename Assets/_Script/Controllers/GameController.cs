@@ -12,11 +12,10 @@ public class GameController : MonoBehaviour
 
     public void Awake()
     {
+        Reset();
         if (instance == null)
         {
             instance = this;
-            Reset();
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -29,15 +28,17 @@ public class GameController : MonoBehaviour
     public TsunamiController TsunamiController { get; private set; }
     public List<CatController> CatControllers { get; private set; }
 
-    public UIDisplayController UIDisplayController { get; private set; }
+    public UIDisplayLevel_1 UIDisplayController { get; private set; }
 
 
     public void Reset()
     {
+        StopAllCoroutines();
         HeroController = null;
         LevelController = null;
         TsunamiController = null;
         CatControllers = new();
+
     }
 
     public void RegisterController(HeroController heroController)
@@ -76,20 +77,38 @@ public class GameController : MonoBehaviour
         HeroController.EnableControlHero(); //need to change to observer
         //TsunamiController.StartChasingHero();
         Observer.Notify(ObserverConstants.EnterPhase_1);
+        ReduceSpeed();
     }
 
     public void RestartLevel()
     {
+        StopAllCoroutines();
         SceneManager.LoadScene(SceneConstants.Level_1);
         Observer.Notify(ObserverConstants.RestartGame);
     }
 
-    public void UpgradeSpeed(int additionalSpeed)
+
+    public void BoostSpeed()
     {
         if (HeroController != null)
         {
-            HeroController.UpgradeSpeed(additionalSpeed);
+            HeroController.UpgradeSpeed(LevelController.Level.BoostSpeedAmount);
         }
+    }
+
+    public void ReduceSpeed()
+    {
+        StartCoroutine (ReduceSpeedCoroutine());
+    }
+
+    private IEnumerator ReduceSpeedCoroutine()
+    {
+        yield return new WaitForSeconds(LevelController.Level.ReduceSpeedDeltaTime);
+        if (HeroController != null)
+        {
+            HeroController.ReduceSpeed(LevelController.Level.ReduceSpeedAmount);
+        }
+        StartCoroutine(ReduceSpeedCoroutine());
     }
 
 }
