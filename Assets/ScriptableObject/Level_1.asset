@@ -26,7 +26,7 @@ MonoBehaviour:
   tsunamiStartDistance: 50
   finishLineDistance_1: 400
   isRandomCatSpawn_1: 0
-  numberCatRandomSpawn_1: 50
+  numberCatRandomSpawn_1: 200
   catFixedSpawnPoint_1:
   - spawnCoordination: {x: 80, y: 0, z: 50}
     radius: 10
@@ -41,7 +41,7 @@ MonoBehaviour:
   - spawnCoordination: {x: 60, y: 0, z: 370}
     radius: 10
   isRandomObstacleSpawn_1: 1
-  numberObstacleRandomSpawn_1: 10
+  numberObstacleRandomSpawn_1: 7
   obstacleFixedSpawnPoint_1:
   - spawnCoordination: {x: 25, y: 0, z: 80}
     radius: 10

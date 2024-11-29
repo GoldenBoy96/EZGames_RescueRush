@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260418c4bca4c4b4ea84b938e9130343, type: 3}
   m_Name: Tsunami_1
   m_EditorClassIdentifier: 
-  speedPhase_0: 20
+  speedPhase_0: 30
   speedPhase_1: 50
   speedPhase_2: 100
   width: 200
